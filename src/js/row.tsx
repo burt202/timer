@@ -1,5 +1,6 @@
 import * as React from "react"
 import {useEffect, useRef} from "react"
+import {useAlarm} from "./useAlarm"
 
 interface Props {
   start: string
@@ -9,10 +10,11 @@ interface Props {
 
 export default function Row(props: Props) {
   const previousProgress = usePrevious(props.progress)
+  const alarm = useAlarm()
 
   useEffect(() => {
     if (previousProgress && previousProgress < 100 && props.progress >= 100) {
-      console.log("complete")
+      alarm()
     }
   }, [props.progress])
 
