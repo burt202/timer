@@ -1,3 +1,5 @@
+import * as moment from "moment"
+import {Moment} from "moment"
 import * as R from "ramda"
 import {Item, Stage} from "./main"
 
@@ -5,20 +7,19 @@ function round(num: number, decimals: number) {
   return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals)
 }
 
-export function getProgress(start: number, end: number, currentTime: number) {
-  if (currentTime > end) {
+export function getProgress(lower: Moment, upper: Moment, currentTime: Moment) {
+  if (moment(currentTime).isAfter(upper)) {
     return 100
   }
 
-  if (currentTime < start) {
+  if (moment(currentTime).isBefore(lower)) {
     return 0
   }
 
-  const upper = end - start
-  const progress = currentTime - start
-  console.log("upper, progress", upper, progress)
+  const max = upper.diff(lower, "seconds")
+  const progress = currentTime.diff(lower, "seconds")
 
-  return round((progress / upper) * 100, 2)
+  return round((progress / max) * 100, 2)
 }
 
 export function processItems(items: Array<Item>) {

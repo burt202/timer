@@ -7,23 +7,21 @@ import {getProgress, processItems} from "./utils"
 
 interface Props {
   items: Array<Item>
+  startTime: string
 }
 
 export default function Timer(props: Props) {
-  const [currentTime, setCurrentTime] = useState(moment().format("HHmmss"))
+  const [currentTime, setCurrentTime] = useState(moment())
 
   useEffect(() => {
-    const interval = setInterval(
-      () => setCurrentTime(moment().format("HHmmss")),
-      1000,
-    )
+    const interval = setInterval(() => setCurrentTime(moment()), 1000)
     return () => {
       clearInterval(interval)
     }
   }, [])
 
   const {items, total} = processItems(props.items)
-  const readyAt = moment().add(total, "minute").format("HH:mm")
+  const readyAt = moment(props.startTime).add(total, "minute")
 
   return (
     <>
@@ -42,29 +40,24 @@ export default function Timer(props: Props) {
           }}
         >
           <span>Ready at</span>
-          <span style={{fontSize: 20}}>{readyAt}</span>
+          <span style={{fontSize: 20}}>{readyAt.clone().format("HH:mm")}</span>
         </div>
       </div>
       {items.map((g, i) => {
-        const minute = moment().add(g.minute, "minute").format("HH:mm")
-        const start = moment(minute, "HH:mm").format("HHmmss")
-        const nextMinute = items[i + 1]
-          ? moment()
-              .add(items[i + 1].minute, "minute")
-              .format("HH:mm")
+        const lower = moment(props.startTime).add(g.minute, "minute")
+        const upper = items[i + 1]
+          ? moment(props.startTime).add(items[i + 1].minute, "minute")
           : readyAt
-        const end = moment(nextMinute, "HH:mm")
-          .subtract(1, "second")
-          .format("HHmmss")
 
-        const progress = getProgress(
-          parseInt(start, 10),
-          parseInt(end, 10),
-          parseInt(currentTime, 10),
-        )
+        const progress = getProgress(lower, upper, currentTime)
 
         return (
-          <Row key={i} minute={minute} group={g.group} progress={progress} />
+          <Row
+            key={i}
+            start={lower.clone().format("HH:mm")}
+            group={g.group}
+            progress={progress}
+          />
         )
       })}
     </>

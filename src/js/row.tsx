@@ -1,7 +1,7 @@
 import * as React from "react"
 
 interface Props {
-  minute: string
+  start: string
   group: Array<{name: string; stage: string}>
   progress: number
 }
@@ -17,7 +17,7 @@ export default function Row(props: Props) {
       }}
     >
       <div style={{marginRight: 16, display: "flex", alignItems: "center"}}>
-        <h1 style={{margin: 0}}>{props.minute}</h1>
+        <h1 style={{margin: 0}}>{props.start}</h1>
       </div>
       <div>
         {props.group.map((group, i) => {

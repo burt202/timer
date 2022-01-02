@@ -1,3 +1,4 @@
+import * as moment from "moment"
 import * as React from "react"
 import {useState} from "react"
 import Items from "./items"
@@ -44,12 +45,18 @@ const items = [
 ] as Array<Item>
 
 export default function Main() {
-  const [stage, setStage] = useState(0)
+  const [startTime, setStartTime] = useState<string | undefined>(undefined)
 
   return (
     <div style={{width: 1000, margin: "0 auto"}}>
-      {stage === 0 && <Items items={items} onGoClick={() => setStage(1)} />}
-      {stage === 1 && <Timer items={items} />}
+      {startTime ? (
+        <Timer items={items} startTime={startTime} />
+      ) : (
+        <Items
+          items={items}
+          onGoClick={() => setStartTime(moment().format())}
+        />
+      )}
     </div>
   )
 }
