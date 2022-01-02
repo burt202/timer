@@ -4,7 +4,7 @@ declare var VERSION: string
 import * as React from "react"
 import * as ReactDom from "react-dom"
 
-import Main from "./main"
+import Main from "./js/main"
 
 require("./style.css")
 
