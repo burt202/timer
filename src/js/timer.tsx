@@ -1,13 +1,46 @@
 import * as moment from "moment"
 import * as R from "ramda"
 import * as React from "react"
+import {useEffect, useState} from "react"
 import {Item, Stage} from "./main"
+import Row from "./row"
 
 interface Props {
   items: Array<Item>
 }
 
+function round(num: number, decimals: number) {
+  return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals)
+}
+
+function getProgress(start: number, end: number, currentTime: number) {
+  if (currentTime > end) {
+    return 100
+  }
+
+  if (currentTime < start) {
+    return 0
+  }
+
+  const upper = end - start
+  const progress = currentTime - start
+
+  return round((progress / upper) * 100, 2)
+}
+
 export default function Timer(props: Props) {
+  const [currentTime, setCurrentTime] = useState(moment().format("HHmmss"))
+
+  useEffect(() => {
+    const interval = setInterval(
+      () => setCurrentTime(moment().format("HHmmss")),
+      1000,
+    )
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
   const withTotal = R.pipe(
     R.map((i: Item) => {
       const total = R.pipe(
@@ -44,6 +77,8 @@ export default function Timer(props: Props) {
 
   const readyAt = moment().add(total, "minute").format("HH:mm")
 
+  const sorted = R.sortBy(R.prop("minute"), grouped)
+
   return (
     <>
       <div style={{display: "flex", justifyContent: "space-between"}}>
@@ -64,34 +99,26 @@ export default function Timer(props: Props) {
           <span style={{fontSize: 20}}>{readyAt}</span>
         </div>
       </div>
-      {R.sortBy(R.prop("minute"), grouped).map((g, i) => {
+      {sorted.map((g, i) => {
+        const minute = moment().add(g.minute, "minute").format("HH:mm")
+        const start = moment(minute, "HH:mm").format("HHmmss")
+        const nextMinute = sorted[i + 1]
+          ? moment()
+              .add(sorted[i + 1].minute, "minute")
+              .format("HH:mm")
+          : readyAt
+        const end = moment(nextMinute, "HH:mm")
+          .subtract(1, "second")
+          .format("HHmmss")
+
+        const progress = getProgress(
+          parseInt(start, 10),
+          parseInt(end, 10),
+          parseInt(currentTime, 10),
+        )
+
         return (
-          <div
-            key={i}
-            style={{
-              background: "#ccc",
-              marginTop: 8,
-              padding: 8,
-              display: "flex",
-            }}
-          >
-            <div
-              style={{marginRight: 16, display: "flex", alignItems: "center"}}
-            >
-              <h1 style={{margin: 0}}>
-                {moment().add(g.minute, "minute").format("HH:mm")}
-              </h1>
-            </div>
-            <div>
-              {g.group.map((group, j) => {
-                return (
-                  <p key={`${i}${j}`}>
-                    {group.name} - {group.stage}
-                  </p>
-                )
-              })}
-            </div>
-          </div>
+          <Row key={i} minute={minute} group={g.group} progress={progress} />
         )
       })}
     </>
