@@ -7,8 +7,6 @@ interface Props {
 }
 
 export default function Row(props: Props) {
-  console.log("progress", props.progress)
-
   return (
     <div
       style={{
