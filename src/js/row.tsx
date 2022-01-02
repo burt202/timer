@@ -1,4 +1,5 @@
 import * as React from "react"
+import {useEffect, useRef} from "react"
 
 interface Props {
   start: string
@@ -7,6 +8,14 @@ interface Props {
 }
 
 export default function Row(props: Props) {
+  const previousProgress = usePrevious(props.progress)
+
+  useEffect(() => {
+    if (previousProgress && previousProgress < 100 && props.progress >= 100) {
+      console.log("complete")
+    }
+  }, [props.progress])
+
   return (
     <div
       style={{
@@ -30,4 +39,14 @@ export default function Row(props: Props) {
       </div>
     </div>
   )
+}
+
+function usePrevious<T>(value: T) {
+  const ref = useRef<T>()
+
+  useEffect(() => {
+    ref.current = value
+  }, [value])
+
+  return ref.current
 }
