@@ -128,7 +128,26 @@ export default function Items(props: Props) {
           </div>
         )
       })}
-      <div style={{marginTop: 32}}>
+      <div style={{display: "flex", justifyContent: "flex-end"}}>
+        <button
+          style={{
+            background: "#ccc",
+            padding: "8px 16px",
+            border: 0,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            const updated = [
+              ...props.items,
+              {name: "", stages: [{name: "", duration: 1}]},
+            ]
+            props.onItemsChange(updated)
+          }}
+        >
+          Add Item
+        </button>
+      </div>
+      <div style={{marginTop: 16}}>
         {props.error && <p style={{color: "red"}}>{props.error}</p>}
         <button
           style={{
