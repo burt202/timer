@@ -60,7 +60,7 @@ export default function Main() {
   const [error, setError] = useState<string | undefined>(undefined)
 
   return (
-    <div style={{width: 1000, margin: "0 auto", paddingBottom: 16}}>
+    <div className="main">
       {startTime ? (
         <Timer items={items} startTime={startTime} />
       ) : (
