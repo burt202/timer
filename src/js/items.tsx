@@ -47,67 +47,84 @@ export default function Items(props: Props) {
                 }}
               />
             </div>
-            {item.stages.map((s, j) => {
-              return (
-                <div key={`${i}${j}`} style={{paddingLeft: 16, marginTop: 8}}>
-                  <input
-                    placeholder="Stage name"
-                    value={s.name}
-                    style={{
-                      width: 200,
-                      border: 0,
-                      borderBottom: "1px solid",
-                      marginRight: 8,
-                    }}
-                    onChange={(e) => {
-                      const stages = R.update(
-                        j,
-                        {...s, name: e.target.value},
-                        item.stages,
-                      )
-
-                      updateItem(i, {...item, stages})
-                    }}
-                  />
-                  <input
-                    type="number"
-                    value={s.duration}
-                    style={{width: 50}}
-                    onChange={(e) => {
-                      const duration =
-                        e.target.value.length === 0
-                          ? 1
-                          : parseInt(e.target.value, 10)
-
-                      const stages = R.update(
-                        j,
-                        {...s, duration: duration < 1 ? 1 : duration},
-                        item.stages,
-                      )
-
-                      updateItem(i, {...item, stages})
-                    }}
-                  />{" "}
-                  mins
-                  {j > 0 && (
-                    <a
+            <div style={{paddingLeft: 16}}>
+              {item.stages.map((s, j) => {
+                return (
+                  <div key={`${i}${j}`} style={{marginTop: 8}}>
+                    <input
+                      placeholder="Stage name"
+                      value={s.name}
                       style={{
-                        marginLeft: 24,
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                        color: "#336699",
+                        width: 200,
+                        border: 0,
+                        borderBottom: "1px solid",
+                        marginRight: 8,
                       }}
-                      onClick={() => {
-                        const stages = R.remove(j, 1, item.stages)
+                      onChange={(e) => {
+                        const stages = R.update(
+                          j,
+                          {...s, name: e.target.value},
+                          item.stages,
+                        )
+
                         updateItem(i, {...item, stages})
                       }}
-                    >
-                      Remove
-                    </a>
-                  )}
-                </div>
-              )
-            })}
+                    />
+                    <input
+                      type="number"
+                      value={s.duration}
+                      style={{width: 50}}
+                      onChange={(e) => {
+                        const duration =
+                          e.target.value.length === 0
+                            ? 1
+                            : parseInt(e.target.value, 10)
+
+                        const stages = R.update(
+                          j,
+                          {...s, duration: duration < 1 ? 1 : duration},
+                          item.stages,
+                        )
+
+                        updateItem(i, {...item, stages})
+                      }}
+                    />{" "}
+                    mins
+                    {j > 0 && (
+                      <a
+                        style={{
+                          marginLeft: 24,
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          color: "#336699",
+                        }}
+                        onClick={() => {
+                          const stages = R.remove(j, 1, item.stages)
+                          updateItem(i, {...item, stages})
+                        }}
+                      >
+                        Remove
+                      </a>
+                    )}
+                  </div>
+                )
+              })}
+              <a
+                style={{
+                  marginTop: 8,
+                  display: "inline-block",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  color: "#336699",
+                }}
+                onClick={() => {
+                  const stages = [...item.stages, {name: "", duration: 1}]
+                  updateItem(i, {...item, stages})
+                }}
+              >
+                Add
+              </a>
+            </div>
           </div>
         )
       })}
