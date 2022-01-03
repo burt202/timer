@@ -84,6 +84,22 @@ export default function Items(props: Props) {
                     }}
                   />{" "}
                   mins
+                  {j > 0 && (
+                    <a
+                      style={{
+                        marginLeft: 24,
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                        color: "#336699",
+                      }}
+                      onClick={() => {
+                        const stages = R.remove(j, 1, item.stages)
+                        updateItem(i, {...item, stages})
+                      }}
+                    >
+                      Remove
+                    </a>
+                  )}
                 </div>
               )
             })}
