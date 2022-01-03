@@ -69,14 +69,18 @@ export default function Items(props: Props) {
                     }}
                   />
                   <input
-                    placeholder="Stage duration"
                     type="number"
                     value={s.duration}
                     style={{width: 50}}
                     onChange={(e) => {
+                      const duration =
+                        e.target.value.length === 0
+                          ? 1
+                          : parseInt(e.target.value, 10)
+
                       const stages = R.update(
                         j,
-                        {...s, duration: parseInt(e.target.value, 10)},
+                        {...s, duration: duration < 1 ? 1 : duration},
                         item.stages,
                       )
 
