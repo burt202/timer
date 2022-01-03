@@ -78,6 +78,7 @@ export default function Main() {
             }
 
             setStartTime(moment().format())
+            window.scrollTo(0, 0)
           }}
           error={error}
         />

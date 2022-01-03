@@ -55,7 +55,7 @@ export default function Items(props: Props) {
                       placeholder="Stage name"
                       value={s.name}
                       style={{
-                        width: 200,
+                        width: 150,
                         border: 0,
                         borderBottom: "1px solid",
                         marginRight: 8,
