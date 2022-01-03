@@ -44,9 +44,20 @@ const defaultItems = [
   },
 ] as Array<Item>
 
+function validateItems(items: Array<Item>) {
+  return items.filter((item) => {
+    const hasEmptyStageNames = item.stages.some((stage) => {
+      return stage.name.length === 0
+    })
+
+    return item.name.length === 0 || hasEmptyStageNames
+  })
+}
+
 export default function Main() {
   const [startTime, setStartTime] = useState<string | undefined>(undefined)
   const [items, setItems] = useState(defaultItems)
+  const [error, setError] = useState<string | undefined>(undefined)
 
   return (
     <div style={{width: 1000, margin: "0 auto", paddingBottom: 16}}>
@@ -58,7 +69,17 @@ export default function Main() {
           onItemsChange={(changed: Array<Item>) => {
             setItems(changed)
           }}
-          onGoClick={() => setStartTime(moment().format())}
+          onGoClick={() => {
+            const errors = validateItems(items)
+
+            if (errors.length > 0) {
+              setError("No item or stage names can be empty")
+              return
+            }
+
+            setStartTime(moment().format())
+          }}
+          error={error}
         />
       )}
     </div>

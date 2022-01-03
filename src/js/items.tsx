@@ -6,6 +6,7 @@ interface Props {
   items: Array<Item>
   onItemsChange: (changed: Array<Item>) => void
   onGoClick: () => void
+  error?: string
 }
 
 export default function Items(props: Props) {
@@ -111,6 +112,7 @@ export default function Items(props: Props) {
         )
       })}
       <div style={{marginTop: 32}}>
+        {props.error && <p style={{color: "red"}}>{props.error}</p>}
         <button
           style={{
             background: "#336699",
