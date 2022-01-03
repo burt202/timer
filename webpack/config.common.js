@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require("copy-webpack-plugin")
 const webpack = require("webpack")
 const path = require("path")
 
@@ -23,6 +24,9 @@ module.exports = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [{from: "src/delete.svg", to: "delete.svg"}],
+    }),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(packageJson.version),
     }),

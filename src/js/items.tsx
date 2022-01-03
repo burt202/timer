@@ -22,21 +22,42 @@ export default function Items(props: Props) {
       {props.items.map((item, i) => {
         return (
           <div key={i} style={{marginBottom: 24}}>
-            <input
-              placeholder="Item name"
-              value={item.name}
-              style={{padding: 8, width: "100%"}}
-              onChange={(e) => {
-                updateItem(i, {...item, name: e.target.value})
-              }}
-            />
+            <div style={{display: "flex", alignItems: "center"}}>
+              <input
+                placeholder="Item name"
+                value={item.name}
+                style={{
+                  padding: 8,
+                  width: "100%",
+                  marginRight: 8,
+                  background: "#eee",
+                  border: "1px solid",
+                }}
+                onChange={(e) => {
+                  updateItem(i, {...item, name: e.target.value})
+                }}
+              />
+              <img
+                src="delete.svg"
+                style={{height: 24, cursor: "pointer"}}
+                onClick={() => {
+                  const updated = R.remove(i, 1, props.items)
+                  props.onItemsChange(updated)
+                }}
+              />
+            </div>
             {item.stages.map((s, j) => {
               return (
                 <div key={`${i}${j}`} style={{paddingLeft: 16, marginTop: 8}}>
                   <input
                     placeholder="Stage name"
                     value={s.name}
-                    style={{width: 200, marginRight: 8}}
+                    style={{
+                      width: 200,
+                      border: 0,
+                      borderBottom: "1px solid",
+                      marginRight: 8,
+                    }}
                     onChange={(e) => {
                       const stages = R.update(
                         j,
