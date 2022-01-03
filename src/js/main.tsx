@@ -14,7 +14,7 @@ export interface Item {
   stages: Array<Stage>
 }
 
-const items = [
+const defaultItems = [
   {name: "Carrots", stages: [{name: "Boil", duration: 20}]},
   {name: "Brocolli", stages: [{name: "Boil", duration: 5}]},
   {
@@ -46,14 +46,18 @@ const items = [
 
 export default function Main() {
   const [startTime, setStartTime] = useState<string | undefined>(undefined)
+  const [items, setItems] = useState(defaultItems)
 
   return (
-    <div style={{width: 1000, margin: "0 auto"}}>
+    <div style={{width: 1000, margin: "0 auto", paddingBottom: 16}}>
       {startTime ? (
         <Timer items={items} startTime={startTime} />
       ) : (
         <Items
           items={items}
+          onItemsChange={(changed: Array<Item>) => {
+            setItems(changed)
+          }}
           onGoClick={() => setStartTime(moment().format())}
         />
       )}
