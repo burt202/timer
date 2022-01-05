@@ -56,17 +56,20 @@ function validateItems(items: Array<Item>) {
 
 export default function Main() {
   const [startTime, setStartTime] = useState<string | undefined>(undefined)
+  const [page, setPage] = useState("items")
+  const [mode, setMode] = useState("add")
   const [items, setItems] = useState(defaultItems)
   const [error, setError] = useState<string | undefined>(undefined)
 
   return (
     <div className="main">
-      {startTime ? (
+      {page === "timer" && startTime ? (
         <Timer
           items={items}
           startTime={startTime}
-          onBackClick={() => {
-            setStartTime(undefined)
+          onEditClick={() => {
+            setPage("items")
+            setMode("edit")
           }}
         />
       ) : (
@@ -83,7 +86,12 @@ export default function Main() {
               return
             }
 
-            setStartTime(moment().format())
+            setPage("timer")
+
+            if (mode === "add") {
+              setStartTime(moment().format())
+            }
+
             window.scrollTo(0, 0)
           }}
           error={error}
