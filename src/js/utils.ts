@@ -57,5 +57,5 @@ export function processItems(items: Array<Item>) {
     return {minute, group}
   })
 
-  return {total, items: R.sortBy(R.prop("minute"), grouped)}
+  return {total, items: R.sortBy((g) => parseInt(g.minute, 10), grouped)}
 }
