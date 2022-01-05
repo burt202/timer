@@ -62,7 +62,13 @@ export default function Main() {
   return (
     <div className="main">
       {startTime ? (
-        <Timer items={items} startTime={startTime} />
+        <Timer
+          items={items}
+          startTime={startTime}
+          onBackClick={() => {
+            setStartTime(undefined)
+          }}
+        />
       ) : (
         <Items
           items={items}

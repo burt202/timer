@@ -8,6 +8,7 @@ import {getProgress, processItems} from "./utils"
 interface Props {
   items: Array<Item>
   startTime: string
+  onBackClick: () => void
 }
 
 export default function Timer(props: Props) {
@@ -42,6 +43,18 @@ export default function Timer(props: Props) {
           <span>Ready at</span>
           <span style={{fontSize: 20}}>{readyAt.clone().format("HH:mm")}</span>
         </div>
+      </div>
+      <div>
+        <a
+          style={{
+            cursor: "pointer",
+            textDecoration: "underline",
+            color: "#336699",
+          }}
+          onClick={props.onBackClick}
+        >
+          Go back
+        </a>
       </div>
       {items.map((g, i) => {
         const lower = moment(props.startTime).add(g.minute, "minute")
