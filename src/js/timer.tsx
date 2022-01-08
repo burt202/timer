@@ -9,6 +9,7 @@ interface Props {
   items: Array<Item>
   startTime: string
   onEditClick: () => void
+  onResetTimerClick: () => void
 }
 
 export default function Timer(props: Props) {
@@ -29,6 +30,26 @@ export default function Timer(props: Props) {
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <h1>Timer</h1>
         <div style={{display: "flex", marginTop: 8}}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginRight: 32,
+            }}
+          >
+            <a
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: "#336699",
+              }}
+              onClick={props.onResetTimerClick}
+            >
+              Reset Timer
+            </a>
+          </div>
           <div
             style={{
               display: "flex",

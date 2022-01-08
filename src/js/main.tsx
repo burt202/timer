@@ -71,6 +71,11 @@ export default function Main() {
             setPage("items")
             setMode("edit")
           }}
+          onResetTimerClick={() => {
+            if (confirm("Are you sure?")) {
+              setStartTime(moment().format())
+            }
+          }}
         />
       ) : (
         <Items
