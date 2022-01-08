@@ -19,6 +19,30 @@ export default function Items(props: Props) {
     <>
       <div style={{display: "flex", justifyContent: "space-between"}}>
         <h1>Timer</h1>
+        <div style={{display: "flex", marginTop: 8}}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <a
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+                color: "#336699",
+              }}
+              onClick={() => {
+                const cleared = [{name: "", stages: [{name: "", duration: 1}]}]
+                props.onItemsChange(cleared)
+              }}
+            >
+              Clear All
+            </a>
+          </div>
+        </div>
       </div>
       {props.items.map((item, i) => {
         return (
