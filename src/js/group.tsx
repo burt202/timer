@@ -9,7 +9,7 @@ interface Props {
   progress: number
 }
 
-export default function Row(props: Props) {
+export default function Group(props: Props) {
   const previousProgress = usePrevious(props.progress)
   const alarm = useAlarm()
 

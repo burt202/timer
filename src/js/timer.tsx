@@ -1,8 +1,8 @@
 import * as moment from "moment"
 import * as React from "react"
 import {useEffect, useState} from "react"
+import Group from "./group"
 import {Item} from "./main"
-import Row from "./row"
 import {processItems, getProgress} from "./utils"
 
 interface Props {
@@ -96,7 +96,7 @@ export default function Timer(props: Props) {
         const progress = getProgress(g.start, groupEndTime, currentTime)
 
         return (
-          <Row key={i} start={g.start} items={g.items} progress={progress} />
+          <Group key={i} start={g.start} items={g.items} progress={progress} />
         )
       })}
     </>
