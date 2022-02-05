@@ -15,33 +15,33 @@ export interface Item {
 }
 
 const defaultItems = [
-  {name: "Carrots", stages: [{name: "Boil", duration: 1}]},
-  {name: "Brocolli", stages: [{name: "Boil", duration: 2}]},
+  {name: "Carrots", stages: [{name: "Boil", duration: 20}]},
+  {name: "Brocolli", stages: [{name: "Boil", duration: 5}]},
   {
     name: "Peas",
     stages: [
-      {name: "Bring water to boil", duration: 2},
-      {name: "Boil", duration: 1},
+      {name: "Bring water to boil", duration: 10},
+      {name: "Boil", duration: 4},
     ],
   },
-  // {name: "Pigs in blankets", stages: [{name: "Put in oven", duration: 30}]},
-  // {name: "Stuffing", stages: [{name: "Put in oven", duration: 30}]},
-  // {
-  //   name: "Potatoes",
-  //   stages: [
-  //     {name: "Boil", duration: 15},
-  //     {name: "Roast", duration: 60},
-  //   ],
-  // },
-  // {name: "Plates", stages: [{name: "Put in oven", duration: 20}]},
-  // {name: "Yorkshires", stages: [{name: "Put in oven", duration: 5}]},
-  // {
-  //   name: "Beef",
-  //   stages: [
-  //     {name: "Roast", duration: 43},
-  //     {name: "Rest", duration: 15},
-  //   ],
-  // },
+  {name: "Pigs in blankets", stages: [{name: "Put in oven", duration: 30}]},
+  {name: "Stuffing", stages: [{name: "Put in oven", duration: 30}]},
+  {
+    name: "Potatoes",
+    stages: [
+      {name: "Boil", duration: 15},
+      {name: "Roast", duration: 60},
+    ],
+  },
+  {name: "Plates", stages: [{name: "Put in oven", duration: 20}]},
+  {name: "Yorkshires", stages: [{name: "Put in oven", duration: 5}]},
+  {
+    name: "Beef",
+    stages: [
+      {name: "Roast", duration: 43},
+      {name: "Rest", duration: 15},
+    ],
+  },
 ] as Array<Item>
 
 function validateItems(items: Array<Item>) {
