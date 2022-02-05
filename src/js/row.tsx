@@ -1,10 +1,11 @@
+import * as moment from "moment"
 import * as React from "react"
 import {useEffect, useRef} from "react"
 import {useAlarm} from "./useAlarm"
 
 interface Props {
   start: string
-  group: Array<{name: string; stage: string}>
+  items: Array<{name: string; stage: string}>
   progress: number
 }
 
@@ -28,13 +29,13 @@ export default function Row(props: Props) {
       }}
     >
       <div style={{marginRight: 16, display: "flex", alignItems: "center"}}>
-        <h1 style={{margin: 0}}>{props.start}</h1>
+        <h1 style={{margin: 0}}>{moment(props.start).format("HH:mm")}</h1>
       </div>
       <div>
-        {props.group.map((group, i) => {
+        {props.items.map((item, i) => {
           return (
             <p key={i}>
-              {group.name} - {group.stage}
+              {item.name} - {item.stage}
             </p>
           )
         })}

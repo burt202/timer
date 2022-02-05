@@ -1,16 +1,15 @@
 import {expect} from "chai"
-import * as moment from "moment"
 import {Item} from "../main"
 import {getProgress, processItems} from "../utils"
 
 context("getProgress", () => {
   context("when current time is greater than end", () => {
     it("should return 100", () => {
-      const lower = moment("2022-01-02T12:15")
-      const upper = moment("2022-01-02T12:25")
-      const currentTime = moment("2022-01-02T12:30")
+      const start = "2022-01-02T12:15"
+      const end = "2022-01-02T12:25"
+      const currentTime = "2022-01-02T12:30"
 
-      const res = getProgress(lower, upper, currentTime)
+      const res = getProgress(start, end, currentTime)
 
       expect(res).to.eql(100)
     })
@@ -18,11 +17,11 @@ context("getProgress", () => {
 
   context("when current time is less than start", () => {
     it("should return 0", () => {
-      const lower = moment("2022-01-02T12:15")
-      const upper = moment("2022-01-02T12:25")
-      const currentTime = moment("2022-01-02T12:10")
+      const start = "2022-01-02T12:15"
+      const end = "2022-01-02T12:25"
+      const currentTime = "2022-01-02T12:10"
 
-      const res = getProgress(lower, upper, currentTime)
+      const res = getProgress(start, end, currentTime)
 
       expect(res).to.eql(0)
     })
@@ -30,11 +29,11 @@ context("getProgress", () => {
 
   context("when current time is less than start", () => {
     it("should return 0", () => {
-      const lower = moment("2022-01-02T12:15")
-      const upper = moment("2022-01-02T12:25")
-      const currentTime = moment("2022-01-02T12:16")
+      const start = "2022-01-02T12:15"
+      const end = "2022-01-02T12:25"
+      const currentTime = "2022-01-02T12:16"
 
-      const res = getProgress(lower, upper, currentTime)
+      const res = getProgress(start, end, currentTime)
 
       expect(res).to.eql(10)
     })
@@ -43,7 +42,7 @@ context("getProgress", () => {
 
 context("processItems", () => {
   context("example 1", () => {
-    it("should correctly", () => {
+    it("should correctly process items", () => {
       const items = [
         {
           name: "Carrots",
@@ -140,51 +139,63 @@ context("processItems", () => {
         },
       ] as Array<Item>
 
-      const res = processItems(items)
+      const res = processItems("2022-01-02T12:15", items)
 
       expect(res).to.eql({
         total: 75,
-        items: [
-          {minute: "0", group: [{name: "Potatoes", stage: "Boil", minute: 0}]},
+        groups: [
           {
-            minute: "15",
-            group: [{name: "Potatoes", stage: "Roast", minute: 15}],
+            start: "2022-01-02T12:15:00+00:00",
+            items: [{name: "Potatoes", stage: "Boil"}],
           },
-          {minute: "17", group: [{name: "Beef", stage: "Roast", minute: 17}]},
           {
-            minute: "45",
-            group: [
-              {name: "Pigs in blankets", stage: "Put in oven", minute: 45},
-              {name: "Stuffing", stage: "Put in oven", minute: 45},
+            start: "2022-01-02T12:30:00+00:00",
+            items: [{name: "Potatoes", stage: "Roast"}],
+          },
+          {
+            start: "2022-01-02T12:32:00+00:00",
+            items: [{name: "Beef", stage: "Roast"}],
+          },
+          {
+            start: "2022-01-02T13:00:00+00:00",
+            items: [
+              {name: "Pigs in blankets", stage: "Put in oven"},
+              {name: "Stuffing", stage: "Put in oven"},
             ],
           },
           {
-            minute: "55",
-            group: [
-              {name: "Carrots", stage: "Boil", minute: 55},
-              {name: "Plates", stage: "Put in oven", minute: 55},
+            start: "2022-01-02T13:10:00+00:00",
+            items: [
+              {name: "Carrots", stage: "Boil"},
+              {name: "Plates", stage: "Put in oven"},
             ],
           },
-          {minute: "60", group: [{name: "Beef", stage: "Rest", minute: 60}]},
           {
-            minute: "61",
-            group: [{name: "Peas", stage: "Bring water to boil", minute: 61}],
+            start: "2022-01-02T13:15:00+00:00",
+            items: [{name: "Beef", stage: "Rest"}],
           },
           {
-            minute: "70",
-            group: [
-              {name: "Brocolli", stage: "Boil", minute: 70},
-              {name: "Yorkshires", stage: "Put in oven", minute: 70},
+            start: "2022-01-02T13:16:00+00:00",
+            items: [{name: "Peas", stage: "Bring water to boil"}],
+          },
+          {
+            start: "2022-01-02T13:25:00+00:00",
+            items: [
+              {name: "Brocolli", stage: "Boil"},
+              {name: "Yorkshires", stage: "Put in oven"},
             ],
           },
-          {minute: "71", group: [{name: "Peas", stage: "Boil", minute: 71}]},
+          {
+            start: "2022-01-02T13:26:00+00:00",
+            items: [{name: "Peas", stage: "Boil"}],
+          },
         ],
       })
     })
   })
 
   context("example 2", () => {
-    it("should correctly", () => {
+    it("should correctly process items", () => {
       const items = [
         {
           name: "Carrots",
@@ -241,34 +252,37 @@ context("processItems", () => {
         },
       ] as Array<Item>
 
-      const res = processItems(items)
+      const res = processItems("2022-01-02T12:15", items)
 
       expect(res).to.eql({
         total: 20,
-        items: [
+        groups: [
           {
-            minute: "0",
-            group: [
-              {name: "Carrots", stage: "Boil", minute: 0},
-              {name: "Plates", stage: "Put in oven", minute: 0},
+            start: "2022-01-02T12:15:00+00:00",
+            items: [
+              {name: "Carrots", stage: "Boil"},
+              {name: "Plates", stage: "Put in oven"},
             ],
           },
           {
-            minute: "3",
-            group: [{name: "Pork", stage: "Turn on grill", minute: 3}],
+            start: "2022-01-02T12:18:00+00:00",
+            items: [{name: "Pork", stage: "Turn on grill"}],
           },
           {
-            minute: "7",
-            group: [{name: "Kale", stage: "Boil water", minute: 7}],
-          },
-          {minute: "8", group: [{name: "Pork", stage: "grill", minute: 8}]},
-          {
-            minute: "15",
-            group: [{name: "Brocolli", stage: "Boil", minute: 15}],
+            start: "2022-01-02T12:22:00+00:00",
+            items: [{name: "Kale", stage: "Boil water"}],
           },
           {
-            minute: "17",
-            group: [{name: "Kale", stage: "put in pan", minute: 17}],
+            start: "2022-01-02T12:23:00+00:00",
+            items: [{name: "Pork", stage: "grill"}],
+          },
+          {
+            start: "2022-01-02T12:30:00+00:00",
+            items: [{name: "Brocolli", stage: "Boil"}],
+          },
+          {
+            start: "2022-01-02T12:32:00+00:00",
+            items: [{name: "Kale", stage: "put in pan"}],
           },
         ],
       })

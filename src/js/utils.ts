@@ -1,5 +1,4 @@
 import * as moment from "moment"
-import {Moment} from "moment"
 import * as R from "ramda"
 import {Item, Stage} from "./main"
 
@@ -7,7 +6,10 @@ function round(num: number, decimals: number) {
   return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals)
 }
 
-export function getProgress(lower: Moment, upper: Moment, currentTime: Moment) {
+export function getProgress(start: string, end: string, currentTime: string) {
+  const lower = moment(start)
+  const upper = moment(end)
+
   if (moment(currentTime).isAfter(upper)) {
     return 100
   }
@@ -17,12 +19,12 @@ export function getProgress(lower: Moment, upper: Moment, currentTime: Moment) {
   }
 
   const max = upper.diff(lower, "seconds")
-  const progress = currentTime.diff(lower, "seconds")
+  const progress = moment(currentTime).diff(lower, "seconds")
 
   return round((progress / max) * 100, 2)
 }
 
-export function processItems(items: Array<Item>) {
+export function processItems(startTime: string, items: Array<Item>) {
   const withTotal = R.pipe(
     R.map((i: Item) => {
       const total = R.pipe(
@@ -42,20 +44,29 @@ export function processItems(items: Array<Item>) {
           R.pluck("duration")(R.takeLast(p.stages.length - i, p.stages)),
         )
 
+        const start = moment(startTime)
+          .add(total - duration, "minutes")
+          .format()
+
         return {
           name: p.name,
           stage: s.name,
-          minute: total - duration,
+          start,
         }
       })
     }),
   )
 
-  const grouped = R.toPairs(
-    R.groupBy((a) => a.minute.toString(), flattened),
-  ).map(([minute, group]) => {
-    return {minute, group}
-  })
+  const grouped = R.toPairs(R.groupBy((a) => a.start, flattened)).map(
+    ([start, group]) => {
+      return {
+        items: group.map((g) => {
+          return R.pick(["name", "stage"], g)
+        }),
+        start,
+      }
+    },
+  )
 
-  return {total, items: R.sortBy((g) => parseInt(g.minute, 10), grouped)}
+  return {total, groups: R.sortBy((g) => g.start, grouped)}
 }

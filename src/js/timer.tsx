@@ -3,7 +3,7 @@ import * as React from "react"
 import {useEffect, useState} from "react"
 import {Item} from "./main"
 import Row from "./row"
-import {getProgress, processItems} from "./utils"
+import {processItems, getProgress} from "./utils"
 
 interface Props {
   items: Array<Item>
@@ -13,16 +13,16 @@ interface Props {
 }
 
 export default function Timer(props: Props) {
-  const [currentTime, setCurrentTime] = useState(moment())
+  const [currentTime, setCurrentTime] = useState(moment().format())
 
   useEffect(() => {
-    const interval = setInterval(() => setCurrentTime(moment()), 1000)
+    const interval = setInterval(() => setCurrentTime(moment().format()), 1000)
     return () => {
       clearInterval(interval)
     }
   }, [])
 
-  const {items, total} = processItems(props.items)
+  const {groups, total} = processItems(props.startTime, props.items)
   const readyAt = moment(props.startTime).add(total, "minute")
 
   return (
@@ -88,21 +88,15 @@ export default function Timer(props: Props) {
           </div>
         </div>
       </div>
-      {items.map((g, i) => {
-        const lower = moment(props.startTime).add(g.minute, "minute")
-        const upper = items[i + 1]
-          ? moment(props.startTime).add(items[i + 1].minute, "minute")
-          : readyAt
+      {groups.map((g, i) => {
+        const groupEndTime = groups[i + 1]
+          ? moment(groups[i + 1].start).format()
+          : readyAt.format()
 
-        const progress = getProgress(lower, upper, currentTime)
+        const progress = getProgress(g.start, groupEndTime, currentTime)
 
         return (
-          <Row
-            key={i}
-            start={lower.clone().format("HH:mm")}
-            group={g.group}
-            progress={progress}
-          />
+          <Row key={i} start={g.start} items={g.items} progress={progress} />
         )
       })}
     </>
