@@ -7,6 +7,7 @@ interface Props {
   start: string
   items: Array<{name: string; stage: string}>
   progress: number
+  onExtend: () => void
 }
 
 export default function Group(props: Props) {
@@ -19,6 +20,8 @@ export default function Group(props: Props) {
     }
   }, [props.progress])
 
+  const isInProgress = props.progress > 0 && props.progress < 100
+
   return (
     <div
       style={{
@@ -26,20 +29,37 @@ export default function Group(props: Props) {
         marginTop: 8,
         padding: 8,
         display: "flex",
+        justifyContent: "space-between",
       }}
     >
-      <div style={{marginRight: 16, display: "flex", alignItems: "center"}}>
-        <h1 style={{margin: 0}}>{moment(props.start).format("HH:mm")}</h1>
+      <div style={{display: "flex"}}>
+        <div style={{marginRight: 16, display: "flex", alignItems: "center"}}>
+          <h1 style={{margin: 0}}>{moment(props.start).format("HH:mm")}</h1>
+        </div>
+        <div>
+          {props.items.map((item, i) => {
+            return (
+              <p key={i}>
+                {item.name} - {item.stage}
+              </p>
+            )
+          })}
+        </div>
       </div>
-      <div>
-        {props.items.map((item, i) => {
-          return (
-            <p key={i}>
-              {item.name} - {item.stage}
-            </p>
-          )
-        })}
-      </div>
+      {isInProgress && (
+        <div style={{display: "flex", alignItems: "center"}}>
+          <a
+            style={{
+              cursor: "pointer",
+              textDecoration: "underline",
+              color: "#336699",
+            }}
+            onClick={props.onExtend}
+          >
+            Extend
+          </a>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,9 +1,10 @@
 import * as moment from "moment"
+import * as R from "ramda"
 import * as React from "react"
 import {useEffect, useState} from "react"
 import Group from "./group"
 import {Item} from "./main"
-import {processItems, getProgress} from "./utils"
+import {processItems, getProgress, getPreviousExtends} from "./utils"
 
 interface Props {
   items: Array<Item>
@@ -13,7 +14,14 @@ interface Props {
 }
 
 export default function Timer(props: Props) {
+  const result = processItems(props.startTime, props.items)
+
   const [currentTime, setCurrentTime] = useState(moment().format())
+  const [groups, setGroups] = useState(
+    result.groups.map((g) => {
+      return {...g, extend: 0}
+    }),
+  )
 
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(moment().format()), 1000)
@@ -22,8 +30,19 @@ export default function Timer(props: Props) {
     }
   }, [])
 
-  const {groups, total} = processItems(props.startTime, props.items)
-  const readyAt = moment(props.startTime).add(total, "minute")
+  useEffect(() => {
+    setGroups(
+      result.groups.map((g) => {
+        return {...g, extend: 0}
+      }),
+    )
+  }, [props.startTime])
+
+  const totalExtends = R.sum(R.pluck("extend", groups))
+  const readyAt = moment(props.startTime).add(
+    result.total + totalExtends,
+    "minute",
+  )
 
   return (
     <>
@@ -89,14 +108,31 @@ export default function Timer(props: Props) {
         </div>
       </div>
       {groups.map((g, i) => {
+        const previousExtends = getPreviousExtends(i, groups)
+
+        const groupStartTime = moment(g.start)
+          .add(previousExtends, "minutes")
+          .format()
+
         const groupEndTime = groups[i + 1]
-          ? moment(groups[i + 1].start).format()
+          ? moment(groups[i + 1].start)
+              .add(previousExtends + g.extend, "minutes")
+              .format()
           : readyAt.format()
 
-        const progress = getProgress(g.start, groupEndTime, currentTime)
+        const progress = getProgress(groupStartTime, groupEndTime, currentTime)
 
         return (
-          <Group key={i} start={g.start} items={g.items} progress={progress} />
+          <Group
+            key={i}
+            start={groupStartTime}
+            items={g.items}
+            progress={progress}
+            onExtend={() => {
+              const updated = R.update(i, {...g, extend: g.extend + 1}, groups)
+              setGroups(updated)
+            }}
+          />
         )
       })}
     </>

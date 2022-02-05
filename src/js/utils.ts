@@ -70,3 +70,10 @@ export function processItems(startTime: string, items: Array<Item>) {
 
   return {total, groups: R.sortBy((g) => g.start, grouped)}
 }
+
+export function getPreviousExtends(
+  index: number,
+  groups: Array<{extend: number}>,
+) {
+  return R.sum(R.pluck("extend", groups.slice(0, index)))
+}
