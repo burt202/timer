@@ -2,10 +2,13 @@
 declare var VERSION: string
 
 import * as React from "react"
-import * as ReactDom from "react-dom"
+import {createRoot} from "react-dom/client"
 
 import Main from "./js/main"
 
-require("./style.css")
+import "./style.css"
 
-ReactDom.render(<Main />, document.body.querySelector("#container"))
+const container = document.body.querySelector("#container") as Element
+const root = createRoot(container)
+
+root.render(<Main />)
