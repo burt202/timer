@@ -1,10 +1,10 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin")
-const webpack = require("webpack")
-const path = require("path")
+import * as CopyWebpackPlugin from "copy-webpack-plugin"
+import * as path from "path"
+import * as webpack from "webpack"
 
-const packageJson = require("../package.json")
+import packageJson = require("../package.json")
 
-module.exports = {
+const config: webpack.Configuration = {
   entry: ["./src/index.tsx"],
   output: {
     publicPath: "/",
@@ -32,3 +32,5 @@ module.exports = {
     }),
   ],
 }
+
+export default config
