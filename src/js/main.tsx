@@ -1,46 +1,76 @@
 import * as moment from "moment"
 import * as React from "react"
 import {useState} from "react"
+import * as uuid from "uuid"
 
 import Items from "./items"
 import Timer from "./timer"
 
 export interface Stage {
+  id: string
   name: string
   duration: number
 }
 
 export interface Item {
+  id: string
   name: string
   stages: Array<Stage>
 }
 
 const defaultItems = [
-  {name: "Carrots", stages: [{name: "Boil", duration: 20}]},
-  {name: "Brocolli", stages: [{name: "Boil", duration: 5}]},
   {
+    id: uuid.v4(),
+    name: "Carrots",
+    stages: [{id: uuid.v4(), name: "Boil", duration: 20}],
+  },
+  {
+    id: uuid.v4(),
+    name: "Brocolli",
+    stages: [{id: uuid.v4(), name: "Boil", duration: 5}],
+  },
+  {
+    id: uuid.v4(),
     name: "Peas",
     stages: [
-      {name: "Bring water to boil", duration: 10},
-      {name: "Boil", duration: 4},
+      {id: uuid.v4(), name: "Bring water to boil", duration: 10},
+      {id: uuid.v4(), name: "Boil", duration: 4},
     ],
   },
-  {name: "Pigs in blankets", stages: [{name: "Put in oven", duration: 30}]},
-  {name: "Stuffing", stages: [{name: "Put in oven", duration: 30}]},
   {
+    id: uuid.v4(),
+    name: "Pigs in blankets",
+    stages: [{id: uuid.v4(), name: "Put in oven", duration: 30}],
+  },
+  {
+    id: uuid.v4(),
+    name: "Stuffing",
+    stages: [{id: uuid.v4(), name: "Put in oven", duration: 30}],
+  },
+  {
+    id: uuid.v4(),
     name: "Potatoes",
     stages: [
-      {name: "Boil", duration: 15},
-      {name: "Roast", duration: 60},
+      {id: uuid.v4(), name: "Boil", duration: 15},
+      {id: uuid.v4(), name: "Roast", duration: 60},
     ],
   },
-  {name: "Plates", stages: [{name: "Put in oven", duration: 20}]},
-  {name: "Yorkshires", stages: [{name: "Put in oven", duration: 5}]},
   {
+    id: uuid.v4(),
+    name: "Plates",
+    stages: [{id: uuid.v4(), name: "Put in oven", duration: 20}],
+  },
+  {
+    id: uuid.v4(),
+    name: "Yorkshires",
+    stages: [{id: uuid.v4(), name: "Put in oven", duration: 5}],
+  },
+  {
+    id: uuid.v4(),
     name: "Beef",
     stages: [
-      {name: "Roast", duration: 43},
-      {name: "Rest", duration: 15},
+      {id: uuid.v4(), name: "Roast", duration: 43},
+      {id: uuid.v4(), name: "Rest", duration: 15},
     ],
   },
 ] as Array<Item>

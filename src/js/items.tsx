@@ -1,5 +1,7 @@
 import * as R from "ramda"
 import * as React from "react"
+import {useEffect, useRef} from "react"
+import * as uuid from "uuid"
 
 import {Item} from "./main"
 
@@ -11,6 +13,18 @@ interface Props {
 }
 
 export default function Items(props: Props) {
+  const lastInputAddedRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (lastInputAddedRef.current) {
+      const el = document.querySelector(
+        `[data-id="${lastInputAddedRef.current}"]`,
+      )
+
+      if (el) (el as HTMLElement).focus()
+    }
+  }, [lastInputAddedRef.current])
+
   const updateItem = (index: number, item: Item) => {
     const updated = R.update(index, item, props.items)
     props.onItemsChange(updated)
@@ -36,7 +50,13 @@ export default function Items(props: Props) {
                 color: "#336699",
               }}
               onClick={() => {
-                const cleared = [{name: "", stages: [{name: "", duration: 1}]}]
+                const cleared = [
+                  {
+                    id: uuid.v4(),
+                    name: "",
+                    stages: [{id: uuid.v4(), name: "", duration: 1}],
+                  },
+                ]
                 props.onItemsChange(cleared)
               }}
             >
@@ -50,6 +70,7 @@ export default function Items(props: Props) {
           <div key={i} style={{marginBottom: 24}}>
             <div style={{display: "flex", alignItems: "center"}}>
               <input
+                data-id={item.id}
                 placeholder="Item name"
                 value={item.name}
                 style={{
@@ -77,6 +98,7 @@ export default function Items(props: Props) {
                 return (
                   <div key={`${i}${j}`} style={{marginTop: 8}}>
                     <input
+                      data-id={s.id}
                       placeholder="Stage name"
                       value={s.name}
                       style={{
@@ -115,7 +137,7 @@ export default function Items(props: Props) {
                       }}
                     />{" "}
                     mins
-                    {j > 0 && (
+                    {item.stages.length > 1 && (
                       <a
                         style={{
                           marginLeft: 24,
@@ -143,7 +165,9 @@ export default function Items(props: Props) {
                   color: "#336699",
                 }}
                 onClick={() => {
-                  const stages = [...item.stages, {name: "", duration: 1}]
+                  const id = uuid.v4()
+                  const stages = [...item.stages, {id, name: "", duration: 1}]
+                  lastInputAddedRef.current = id
                   updateItem(i, {...item, stages})
                 }}
               >
@@ -162,10 +186,16 @@ export default function Items(props: Props) {
             cursor: "pointer",
           }}
           onClick={() => {
+            const id = uuid.v4()
             const updated = [
               ...props.items,
-              {name: "", stages: [{name: "", duration: 1}]},
+              {
+                id,
+                name: "",
+                stages: [{id: uuid.v4(), name: "", duration: 1}],
+              },
             ]
+            lastInputAddedRef.current = id
             props.onItemsChange(updated)
           }}
         >
