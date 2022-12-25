@@ -77,8 +77,9 @@ export default function Items(props: Props) {
                   padding: 8,
                   width: "100%",
                   marginRight: 8,
-                  background: "#eee",
-                  border: "1px solid",
+                  background: "#F5F5F5",
+                  border: "1px solid #CCC",
+                  borderRadius: 4,
                 }}
                 onChange={(e) => {
                   updateItem(i, {...item, name: e.target.value})
