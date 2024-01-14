@@ -58,16 +58,19 @@ export function processItems(startTime: string, items: Array<Item>) {
     }),
   )
 
-  const grouped = R.toPairs(R.groupBy((a) => a.start, flattened)).map(
-    ([start, group]) => {
-      return {
-        items: group.map((g) => {
-          return R.pick(["name", "stage"], g)
-        }),
-        start,
-      }
-    },
-  )
+  const x = R.groupBy((a) => a.start, flattened) as Record<
+    string,
+    Array<{name: string; stage: string; start: string}>
+  >
+
+  const grouped = R.toPairs(x).map(([start, group]) => {
+    return {
+      items: group.map((g) => {
+        return R.pick(["name", "stage"], g)
+      }),
+      start,
+    }
+  })
 
   return {total, groups: R.sortBy((g) => g.start, grouped)}
 }
