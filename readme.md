@@ -2,14 +2,8 @@
 
 ### TODO
 
-update deps
-remove button
-focus
-input style
-
-edit bug
+number input improvement
+pause
 extend/minus refactor
-
-pwa
+different sound on completion
 responsive
-select input for stage names
