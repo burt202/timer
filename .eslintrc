@@ -4,15 +4,16 @@
   parserOptions: {
     project: "tsconfig.json",
   },
-  plugins: ["@typescript-eslint"],
   extends: [
     "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:import/errors",
-    "plugin:import/warnings",
+    "plugin:import/recommended",
     "plugin:import/typescript",
+    "prettier"
   ],
   rules: {
     "no-unused-vars": "off",
@@ -22,11 +23,6 @@
         argsIgnorePattern: "^_",
       },
     ],
-    "import/named": "off",
-    "import/namespace": "off",
-    "import/default": "off",
-    "import/no-named-as-default-member": "off",
-
     "import/order": [
       "error",
       {
@@ -37,5 +33,10 @@
         },
       },
     ],
+  },
+  settings: {
+    react: {
+      version: "detect",
+    },
   }
 }

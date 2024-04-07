@@ -1,3 +1,4 @@
+/* eslint-disable-next-line import/namespace */
 import * as CopyWebpackPlugin from "copy-webpack-plugin"
 import * as path from "path"
 import * as webpack from "webpack"
