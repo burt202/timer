@@ -3,13 +3,19 @@ import * as R from "ramda"
 import React, {useEffect, useRef} from "react"
 import * as uuid from "uuid"
 
-import {Item} from "./main"
+import {Item, Stage} from "./main"
 
 interface Props {
   items: Array<Item>
   onItemsChange: (changed: Array<Item>) => void
   onGoClick: () => void
   error?: string
+}
+
+const swapStage = (array: Array<Stage>, index1: number, index2: number) => {
+  array[index1] = array.splice(index2, 1, array[index1])[0]
+
+  return [...array]
 }
 
 export default function Items(props: Props) {
@@ -124,6 +130,9 @@ export default function Items(props: Props) {
                       }}
                       onClick={() => {
                         if (disableUp) return
+                        const stages = swapStage(item.stages, j, j - 1)
+
+                        updateItem(i, {...item, stages})
                       }}
                     />
                     <ChevronDown
@@ -134,6 +143,10 @@ export default function Items(props: Props) {
                       }}
                       onClick={() => {
                         if (disableDown) return
+
+                        const stages = swapStage(item.stages, j, j + 1)
+
+                        updateItem(i, {...item, stages})
                       }}
                     />
                     <input
