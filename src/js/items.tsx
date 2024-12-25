@@ -1,3 +1,4 @@
+import {ChevronDown, ChevronUp, Trash2} from "lucide-react"
 import * as R from "ramda"
 import React, {useEffect, useRef} from "react"
 import * as uuid from "uuid"
@@ -92,8 +93,7 @@ export default function Items(props: Props) {
                 }}
               />
               <div style={{width: 120}}>Total: {total} mins</div>
-              <img
-                src="delete.svg"
+              <Trash2
                 style={{height: 24, cursor: "pointer"}}
                 onClick={() => {
                   const updated = R.remove(i, 1, props.items)
@@ -103,8 +103,39 @@ export default function Items(props: Props) {
             </div>
             <div style={{paddingLeft: 16}}>
               {item.stages.map((s, j) => {
+                const disableUp = j === 0
+                const disableDown = j === item.stages.length - 1
+
                 return (
-                  <div key={`${i}${j}`} style={{marginTop: 8}}>
+                  <div
+                    key={`${i}${j}`}
+                    style={{
+                      display: "flex",
+                      gap: 8,
+                      alignItems: "center",
+                      marginTop: 8,
+                    }}
+                  >
+                    <ChevronUp
+                      style={{
+                        height: 24,
+                        cursor: "pointer",
+                        opacity: disableUp ? 0.1 : 1,
+                      }}
+                      onClick={() => {
+                        if (disableUp) return
+                      }}
+                    />
+                    <ChevronDown
+                      style={{
+                        height: 24,
+                        cursor: "pointer",
+                        opacity: disableDown ? 0.1 : 1,
+                      }}
+                      onClick={() => {
+                        if (disableDown) return
+                      }}
+                    />
                     <input
                       data-id={s.id}
                       placeholder="Stage name"

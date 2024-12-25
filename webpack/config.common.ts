@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/default
-import CopyWebpackPlugin from "copy-webpack-plugin"
 import path from "path"
 import webpack from "webpack"
 
@@ -25,9 +23,6 @@ const config: webpack.Configuration = {
     extensions: [".tsx", ".ts", ".js"],
   },
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [{from: "src/delete.svg", to: "delete.svg"}],
-    }),
     new webpack.DefinePlugin({
       VERSION: JSON.stringify(packageJson.version),
     }),
