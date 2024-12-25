@@ -1,11 +1,10 @@
-import * as moment from "moment"
+import moment from "moment"
 import * as R from "ramda"
-import * as React from "react"
-import {useEffect, useState} from "react"
+import React, {useEffect, useState} from "react"
 
 import Group from "./group"
 import {Item} from "./main"
-import {processItems, getProgress, getPreviousExtends} from "./utils"
+import {getPreviousExtends, getProgress, processItems} from "./utils"
 
 interface Props {
   items: Array<Item>

@@ -1,6 +1,5 @@
 import * as R from "ramda"
-import * as React from "react"
-import {useEffect, useRef} from "react"
+import React, {useEffect, useRef} from "react"
 import * as uuid from "uuid"
 
 import {Item} from "./main"

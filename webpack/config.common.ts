@@ -1,9 +1,9 @@
-/* eslint-disable-next-line import/namespace */
-import * as CopyWebpackPlugin from "copy-webpack-plugin"
-import * as path from "path"
-import * as webpack from "webpack"
+// eslint-disable-next-line import/default
+import CopyWebpackPlugin from "copy-webpack-plugin"
+import path from "path"
+import webpack from "webpack"
 
-import packageJson = require("../package.json")
+import packageJson from "../package.json"
 
 const config: webpack.Configuration = {
   entry: ["./src/index.tsx"],

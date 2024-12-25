@@ -1,6 +1,5 @@
-import * as moment from "moment"
-import * as React from "react"
-import {useEffect, useRef} from "react"
+import moment from "moment"
+import React, {useEffect, useRef} from "react"
 
 import {useAlarm} from "./useAlarm"
 

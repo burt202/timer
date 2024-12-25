@@ -1,6 +1,5 @@
-import * as moment from "moment"
-import * as React from "react"
-import {useState} from "react"
+import moment from "moment"
+import React, {useState} from "react"
 import * as uuid from "uuid"
 
 import Items from "./items"
