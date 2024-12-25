@@ -18,6 +18,7 @@ export default function Group(props: Props) {
     if (previousProgress && previousProgress < 100 && props.progress >= 100) {
       alarm()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.progress])
 
   const isInProgress = props.progress > 0 && props.progress < 100

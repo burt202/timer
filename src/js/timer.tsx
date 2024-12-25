@@ -36,6 +36,7 @@ export default function Timer(props: Props) {
         return {...g, extend: 0}
       }),
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.startTime])
 
   const totalExtends = R.sum(R.pluck("extend", groups))

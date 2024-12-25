@@ -22,6 +22,7 @@ export default function Items(props: Props) {
 
       if (el) (el as HTMLElement).focus()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lastInputAddedRef.current])
 
   const updateItem = (index: number, item: Item) => {
