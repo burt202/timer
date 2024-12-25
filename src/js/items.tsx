@@ -65,10 +65,17 @@ export default function Items(props: Props) {
           </div>
         </div>
       </div>
+      <div style={{marginBottom: 24}}>
+        Add your items with stages below, the order of the stages matter
+      </div>
       {props.items.map((item, i) => {
+        const total = item.stages.reduce((acc, val) => {
+          return acc + val.duration
+        }, 0)
+
         return (
           <div key={i} style={{marginBottom: 24}}>
-            <div style={{display: "flex", alignItems: "center"}}>
+            <div style={{display: "flex", alignItems: "center", gap: 16}}>
               <input
                 data-id={item.id}
                 placeholder="Item name"
@@ -76,7 +83,6 @@ export default function Items(props: Props) {
                 style={{
                   padding: 8,
                   width: "100%",
-                  marginRight: 8,
                   background: "#F5F5F5",
                   border: "1px solid #CCC",
                   borderRadius: 4,
@@ -85,6 +91,7 @@ export default function Items(props: Props) {
                   updateItem(i, {...item, name: e.target.value})
                 }}
               />
+              <div style={{width: 120}}>Total: {total} mins</div>
               <img
                 src="delete.svg"
                 style={{height: 24, cursor: "pointer"}}

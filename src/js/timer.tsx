@@ -76,7 +76,6 @@ export default function Timer(props: Props) {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              marginRight: 32,
             }}
           >
             <a
@@ -92,6 +91,9 @@ export default function Timer(props: Props) {
           </div>
           <div
             style={{
+              position: "fixed",
+              top: 16,
+              right: 16,
               background: "#336699",
               color: "white",
               display: "flex",
