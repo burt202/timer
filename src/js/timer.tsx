@@ -4,6 +4,7 @@ import React, {useEffect, useState} from "react"
 
 import Group from "./group"
 import {Item} from "./main"
+import {playBuzzer, playFinish} from "./sounds"
 import {getPreviousExtends, getProgress, processItems} from "./utils"
 
 interface Props {
@@ -125,6 +126,8 @@ export default function Timer(props: Props) {
 
         const progress = getProgress(groupStartTime, groupEndTime, currentTime)
 
+        const isLastGroup = i === groups.length - 1
+
         return (
           <Group
             key={i}
@@ -134,6 +137,13 @@ export default function Timer(props: Props) {
             onExtend={() => {
               const updated = R.update(i, {...g, extend: g.extend + 1}, groups)
               setGroups(updated)
+            }}
+            onFinish={() => {
+              if (isLastGroup) {
+                playFinish()
+              } else {
+                playBuzzer()
+              }
             }}
           />
         )

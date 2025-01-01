@@ -1,22 +1,20 @@
 import moment from "moment"
 import React, {useEffect, useRef} from "react"
 
-import {useAlarm} from "./useAlarm"
-
 interface Props {
   start: string
   items: Array<{name: string; stage: string}>
   progress: number
   onExtend: () => void
+  onFinish: () => void
 }
 
 export default function Group(props: Props) {
   const previousProgress = usePrevious(props.progress)
-  const alarm = useAlarm()
 
   useEffect(() => {
     if (previousProgress && previousProgress < 100 && props.progress >= 100) {
-      alarm()
+      props.onFinish()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.progress])
