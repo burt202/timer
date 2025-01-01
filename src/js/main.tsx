@@ -1,5 +1,5 @@
 import moment from "moment"
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import * as uuid from "uuid"
 
 import Items from "./items"
@@ -90,6 +90,21 @@ export default function Main() {
   const [mode, setMode] = useState("add")
   const [items, setItems] = useState(defaultItems)
   const [error, setError] = useState<string | undefined>(undefined)
+
+  useEffect(() => {
+    const onBeforeUnload = (ev: Event) => {
+      if (page === "timer") {
+        ev.preventDefault()
+        return true
+      }
+    }
+
+    window.addEventListener("beforeunload", onBeforeUnload)
+
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload)
+    }
+  }, [page])
 
   return (
     <div className="main">
